@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Joi = require('joi');
 
 const customerSchema = new mongoose.Schema({
   isGold: {
@@ -16,4 +17,14 @@ const customerSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model('Customer', customerSchema);
+function validateReq(data) {
+  const schema = Joi.object({
+    name: Joi.string().min(2).max(50).required(),
+    phone: Joi.number(),
+    isGold: Joi.bool(),
+  });
+
+  return schema.validate(data);
+}
+exports.Customer = mongoose.model('Customer', customerSchema);
+exports.validateReq = validateReq;

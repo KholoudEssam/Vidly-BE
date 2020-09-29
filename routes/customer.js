@@ -1,7 +1,6 @@
 const express = require('express');
-const Joi = require('joi');
 
-const Customer = require('./../models/customer');
+const { Customer, validateReq } = require('./../models/customer');
 
 const customerRouter = express.Router();
 
@@ -62,15 +61,5 @@ customerRouter.delete('/:id', async (req, res) => {
     return res.status(404).send(`${err.value} is invalid id`);
   }
 });
-
-function validateReq(data) {
-  const schema = Joi.object({
-    name: Joi.string().min(2).max(50).required(),
-    phone: Joi.number(),
-    isGold: Joi.bool(),
-  });
-
-  return schema.validate(data);
-}
 
 module.exports = customerRouter;
