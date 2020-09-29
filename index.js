@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 
 const home = require('./routes/home');
 const genres = require('./routes/genres');
+const customers = require('./routes/customer');
 const app = express();
 
 mongoose
@@ -16,6 +17,7 @@ mongoose
 app.use(express.json());
 
 app.use('/api/genres', genres);
+app.use('/api/customers', customers);
 app.use('/', home);
 
 app.listen(3000, () => console.log('Server is running...'));

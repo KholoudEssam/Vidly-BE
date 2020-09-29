@@ -13,7 +13,6 @@ const customerSchema = new mongoose.Schema({
   },
   phone: {
     type: Number,
-    maxlength: 9,
   },
 });
 
