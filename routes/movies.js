@@ -57,7 +57,7 @@ movieRouter.put('/:id', async (req, res) => {
     res.send(movie);
   } catch (err) {
     console.log(err);
-    return res.status(404).send(`${err.value} is invalid id`);
+    //return res.status(400).send(`${err.value} is invalid id`);
   }
 });
 

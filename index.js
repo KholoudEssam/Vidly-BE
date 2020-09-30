@@ -1,6 +1,9 @@
 const express = require('express');
 const mongoose = require('mongoose');
 
+const Joi = require('joi');
+Joi.objectId = require('joi-objectid')(Joi);
+
 const home = require('./routes/home');
 const genres = require('./routes/genres');
 const customers = require('./routes/customer');
