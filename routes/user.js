@@ -1,4 +1,5 @@
 const express = require('express');
+const _ = require('lodash');
 
 const { User, validateReq } = require('./../models/user');
 
@@ -9,18 +10,6 @@ userRouter.get('/', async (req, res) => {
     res.send(users);
 });
 
-userRouter.get('/:id', async (req, res) => {
-    try {
-        const genre = await Genre.findById(req.params.id);
-        if (!genre)
-            return res.status(404).send(`${req.params.id} is not found`);
-
-        res.send(genre);
-    } catch (err) {
-        return res.status(404).send(`${err.value} is invalid id`);
-    }
-});
-
 userRouter.post('/register', async (req, res) => {
     try {
         const { error } = validateReq(req.body);
@@ -29,14 +18,10 @@ userRouter.post('/register', async (req, res) => {
         let user = await User.findOne({ email: req.body.email });
         if (user) return res.status(400).send('User is already registered');
 
-        user = new User({
-            name: req.body.name,
-            email: req.body.email,
-            password: req.body.password,
-        });
+        user = new User(_.pick(req.body, ['name', 'email', 'password']));
 
         await user.save();
-        res.send(user);
+        res.send(_.pick(user, ['name', 'email']));
     } catch (err) {
         return res.status(400).send(err.message);
     }
