@@ -1,6 +1,6 @@
 const express = require('express');
-const Fwan = require('fawn');
 const mongoose = require('mongoose');
+const Fwan = require('fawn');
 
 const { Rental, validateReq } = require('./../models/rental');
 const { Movie } = require('../models/movie');
@@ -46,7 +46,8 @@ rentalRouter.post('/', async (req, res) => {
 
     res.send(rental);
   } catch (err) {
-    return res.status(404).send(`${err.value} is invalid id`);
+    console.log(err.message);
+    //return res.status(400).send(`${err.value} is invalid id`);
   }
 });
 
