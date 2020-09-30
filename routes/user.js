@@ -26,7 +26,10 @@ userRouter.post('/register', async (req, res) => {
         user.password = await bcrypt.hash(user.password, salt);
 
         await user.save();
-        res.send(_.pick(user, ['name', 'email']));
+        //to login immediatly after register
+        const token = jwt.sign({ id: user._id }, config.get('jwtPrivateKey'));
+
+        res.header('x-auth-token', token).send(_.pick(user, ['name', 'email']));
     } catch (err) {
         return res.status(400).send(err.message);
     }
