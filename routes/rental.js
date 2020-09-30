@@ -1,10 +1,13 @@
 const express = require('express');
+const Fwan = require('fawn');
+const mongoose = require('mongoose');
 
 const { Rental, validateReq } = require('./../models/rental');
 const { Movie } = require('../models/movie');
 const { Customer } = require('../models/customer');
 
 const rentalRouter = express.Router();
+Fwan.init(mongoose);
 
 rentalRouter.get('/', async (req, res) => {
   const rentals = await Rental.find().sort('-dateOut');
@@ -35,7 +38,12 @@ rentalRouter.post('/', async (req, res) => {
         dailyRentalRate: movie.dailyRentalRate,
       },
     });
-    rental = await rental.save();
+
+    new Fwan.Task()
+      .save('rentals', rental)
+      .update('movies', { _id: movie._id }, { $inc: { numberInStock: -1 } })
+      .run();
+
     res.send(rental);
   } catch (err) {
     return res.status(404).send(`${err.value} is invalid id`);
