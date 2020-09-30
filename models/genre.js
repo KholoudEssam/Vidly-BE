@@ -19,5 +19,6 @@ function validateReq(data) {
 
 const Genre = mongoose.model('Genre', genreSchema);
 
+module.exports.genreSchema = genreSchema;
 module.exports.Genre = Genre;
 module.exports.validateReq = validateReq;

@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 const home = require('./routes/home');
 const genres = require('./routes/genres');
 const customers = require('./routes/customer');
+const movies = require('./routes/movies');
+
 const app = express();
 
 mongoose
@@ -18,6 +20,7 @@ app.use(express.json());
 
 app.use('/api/genres', genres);
 app.use('/api/customers', customers);
+app.use('/api/movies', movies);
 app.use('/', home);
 
 app.listen(3000, () => console.log('Server is running...'));
