@@ -31,6 +31,6 @@ function validateReq(data) {
   });
   return schema.validate(data);
 }
-
+exports.movieSchema = movieSchema;
 module.exports.Movie = mongoose.model('Movie', movieSchema);
 module.exports.validateReq = validateReq;

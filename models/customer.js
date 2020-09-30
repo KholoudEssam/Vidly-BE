@@ -26,5 +26,6 @@ function validateReq(data) {
 
   return schema.validate(data);
 }
+exports.customerSchema = customerSchema;
 exports.Customer = mongoose.model('Customer', customerSchema);
 exports.validateReq = validateReq;
