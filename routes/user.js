@@ -2,6 +2,7 @@ const express = require('express');
 const _ = require('lodash');
 const bcrypt = require('bcrypt');
 
+const auth = require('../middleware/auth');
 const { User, validateReq } = require('./../models/user');
 
 const userRouter = express.Router();
@@ -9,6 +10,15 @@ const userRouter = express.Router();
 userRouter.get('/', async (req, res) => {
     const users = await User.find();
     res.send(users);
+});
+
+userRouter.get('/current-user', auth, async (req, res) => {
+    //if (!req.user) return res.status(404).send('No logged in user.');
+
+    const user = await User.findById(req.user.id).select('-password -__v');
+    //  if (!user) return res.status(400).send('Invalid ID');
+    res.send(user);
+    // res.send(_.pick(user, ['name', 'email', '_id']));
 });
 
 userRouter.post('/register', async (req, res) => {
