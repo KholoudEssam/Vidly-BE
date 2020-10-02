@@ -15,7 +15,7 @@ userRouter.get('/', async (req, res) => {
 userRouter.get('/current-user', auth, async (req, res) => {
     //if (!req.user) return res.status(404).send('No logged in user.');
 
-    const user = await User.findById(req.user.id).select('-password -__v');
+    const user = await User.findById(req.user._id).select('-password -__v');
     //  if (!user) return res.status(400).send('Invalid ID');
     res.send(user);
     // res.send(_.pick(user, ['name', 'email', '_id']));
@@ -29,14 +29,16 @@ userRouter.post('/register', async (req, res) => {
         let user = await User.findOne({ email: req.body.email });
         if (user) return res.status(400).send('User is already registered');
 
-        user = new User(_.pick(req.body, ['name', 'email', 'password']));
+        user = new User(
+            _.pick(req.body, ['name', 'email', 'password', 'isAdmin'])
+        );
         const salt = await bcrypt.genSalt(10);
         user.password = await bcrypt.hash(user.password, salt);
 
         await user.save();
         //to login immediatly after register
         const token = user.generateToken();
-        console.log(token);
+        // console.log(token);
         res.header('x-auth-token', token).send(_.pick(user, ['name', 'email']));
     } catch (err) {
         return res.status(400).send(err.message);

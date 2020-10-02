@@ -1,12 +1,13 @@
 const express = require('express');
 
 const { Genre, validateReq } = require('./../models/genre');
+const admin = require('../middleware/admin');
 const auth = require('../middleware/auth');
 
 const genreRouter = express.Router();
 
 genreRouter.get('/', async (req, res) => {
-    const genres = await Genre.find();
+    const geres = await Genre.find();
     res.send(genres);
 });
 
@@ -48,7 +49,7 @@ genreRouter.put('/:id', auth, async (req, res) => {
     }
 });
 
-genreRouter.delete('/:id', auth, async (req, res) => {
+genreRouter.delete('/:id', [auth, admin], async (req, res) => {
     try {
         const genre = await Genre.findByIdAndDelete(req.params.id);
         if (!genre)

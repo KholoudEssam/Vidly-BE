@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const config = require('config');
+require('express-async-errors');
 
 const Joi = require('joi');
 Joi.objectId = require('joi-objectid')(Joi);
@@ -11,10 +12,11 @@ const customers = require('./routes/customer');
 const movies = require('./routes/movies');
 const rentals = require('./routes/rental');
 const user = require('./routes/user');
+const error = require('./middleware/error');
 
 const app = express();
 
-console.log(config.get('jwtPrivateKey'));
+// console.log(config.get('jwtPrivateKey'));
 
 if (!config.get('jwtPrivateKey')) {
     console.error('FATAL ERROR: jwtPrivateKey is not defined');
@@ -27,7 +29,7 @@ mongoose
         useCreateIndex: true,
     })
     .then(() => console.log('Connected to db...'))
-    .catch((err) => console.log(err));
+    .catch((err) => console.log(err.message));
 
 app.use(express.json());
 
@@ -37,5 +39,7 @@ app.use('/api/movies', movies);
 app.use('/api/rentals', rentals);
 app.use('/api/user', user);
 app.use('/', home);
+
+app.use(error);
 
 app.listen(3000, () => console.log('Server is running...'));
