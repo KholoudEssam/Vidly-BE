@@ -7,7 +7,8 @@ const auth = require('../middleware/auth');
 const genreRouter = express.Router();
 
 genreRouter.get('/', async (req, res) => {
-    const geres = await Genre.find();
+    //throw Error('Cannot get genres, there is an error');
+    const genres = await Genre.find();
     res.send(genres);
 });
 

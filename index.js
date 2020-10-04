@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const config = require('config');
 require('express-async-errors');
+require('winston-mongodb');
 
 const Joi = require('joi');
 Joi.objectId = require('joi-objectid')(Joi);
@@ -12,9 +13,15 @@ const customers = require('./routes/customer');
 const movies = require('./routes/movies');
 const rentals = require('./routes/rental');
 const user = require('./routes/user');
-const error = require('./middleware/error');
+const { error, logger } = require('./middleware/error');
 
 const app = express();
+
+// process.on('uncaughtException', (ex) => {
+//     console.log('THERE IS UNHANDLED UNCAUGHT EXCEPTION.');
+//     logger.error(ex.message);
+// });
+// throw new Error('There is an exception outside express context');
 
 // console.log(config.get('jwtPrivateKey'));
 
