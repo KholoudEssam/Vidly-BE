@@ -1,4 +1,4 @@
 {
-    "jwtPrivateKey": "",
+    "jwtPrivateKey": "MySercret",
     "db": "mongodb+srv://admin:123@cluster0.xjidd.mongodb.net/vidly"
 }
