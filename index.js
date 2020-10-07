@@ -12,4 +12,5 @@ const { logger } = require('./middleware/error');
 
 app.use(express.json());
 
-app.listen(3000, () => logger.info('Server is running..'));
+const port = process.env.PORT || 3000;
+app.listen(port, () => logger.info('Server is running..'));
