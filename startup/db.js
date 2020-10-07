@@ -1,9 +1,10 @@
 const mongoose = require('mongoose');
 const { logger } = require('../middleware/error');
+const config = require('config');
 
 module.exports = () => {
     mongoose
-        .connect('mongodb+srv://admin:123@cluster0.xjidd.mongodb.net/vidly', {
+        .connect(config.get('db'), {
             useNewUrlParser: true,
             useUnifiedTopology: true,
             useCreateIndex: true,
